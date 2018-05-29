@@ -1,117 +1,12 @@
 $(document).ready(
     function () {
-	new Clipboard('#another');
-
 	if( typeof InstallTrigger !== 'undefined' ){
 	    console.log("main() user agent: should be FireFox " + typeof InstallTrigger );
 	    ffCheck = true;
 	}
 	browserLoad( ffCheck );
-
-	mybutt();
-
     }
 );
-
-function calcAngle()
-{
-    var xstr = null, ystr = null, x = null, y = null;
-
-    /*
-     * https://gamedev.stackexchange.com/questions/14602/what-are-atan-and-atan2-used-for-in-games
-     *
-     * http://www.gamefromscratch.com/post/2012/11/18/GameDev-math-recipes-Rotating-to-face-a-point.aspx
-     *
-    */
-
-    xstr = $('#x-coord').val();
-    ystr = $('#y-coord').val();
-
-    console.log("calcAngle() xstr: "+ xstr + " ystr: " + ystr );
-
-    x = parseFloat( xstr );
-    y = parseFloat( ystr );
-
-    if( typeof(x) == 'number' && typeof(y) == 'number' ){
-	var rad = Math.atan2( y, x );
-	var deg = rad * (180 / Math.PI);
-	console.log("calcAngle() radians is: " + rad + " degrees: " + deg   );
-    }
-
-}
-
-class RequestMaker
-{
-    construct()
-    {
-	this.rm_msg = '';
-    }
-
-    slow_request()
-    {
-	var inst = this;
-	var msg = null;
-	return new Promise( resolve => {
-	    var rs = function( msg ){
-		resolve( msg + "...and then this thingy was added by 'resolver()'");
-	    }
-	    this.actual_request( rs );
-	});
-    }
-
-    actual_request( rfunc )
-    {
-
-	$.ajax({
-	    url: '/php/slow.php',
-	    // async: false,
-	    method: 'GET',
-	    success: function ( result ) {
-		rfunc( result + "...that came from the website, this was added by AJAX");
-	    }
-	});
-
-    }
-
-}
-
-function mybutt(){
-   $("#myButt").click( async function (){
-       var rm = new RequestMaker();
-       console.log("Hang on a sec.  I have a feeling this will take a while");
-       var stuff = await rm.slow_request();
-       console.log("mybutt() got stuff: " + stuff );
-   });
- }
-
-var globObj = {
-    k_list: [
-	'one', 'two', 'three', 'four', 'five', 'six', 'seven', 
-	'eight', 'nine', 'ten'
-    ],
-    d_obj: {},
-    r_obj: []
-};
-
-function reftest( bclik )
-{
-    for( var z = 0; z < globObj.k_list.length; z++ ){
-	var y = (z + 5) * 40;
-	globObj.d_obj[globObj.k_list[z]] = y;
-	console.log("set dataobject " + globObj.k_list[z] + " to " + y);
-    }
-    var lobj = globObj.d_obj;
-    console.log("Done.");
-    var klist = Object.keys( globObj.d_obj );
-    for( var z = 0; z < klist.length; z++ ){
-	console.log("klist key: " + klist[z] + " local object: " + lobj[klist[z]]);
-	lobj[klist[z]] *= 50;
-    }
-    console.log("Done2.");
-    for( var z = 0; z < klist.length; z++ ){
-	console.log("klist key: " + klist[z] + " global object: " + globObj.d_obj[klist[z]] );
-    }
-}
 
 var ffCheck = false;
 var selectedElement = 0;
